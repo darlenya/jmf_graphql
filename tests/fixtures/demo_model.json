@@ -1,0 +1,89 @@
+{
+	"application": {
+		"description": "The definition of an application",
+
+		"attributes": {
+			"app_id": {
+				"type": "string",
+				"description": "The ID for this application",
+				"in_key_hash": true
+			},
+			"name": {
+				"type": "string",
+				"description": "The name of the application"
+			},
+			"description": {
+				"type": "string"
+			},
+			"creation_date": {
+				"type": "date"
+			}
+		},
+		"references": {
+			"entitlements": {
+				"target": "entitlement",
+				"annotations": {
+					"graphql": {
+						"reference_type": "connection"
+					}
+				}
+			}
+		}
+	},
+
+	"entitlement": {
+		"description": "An entitlement of an application, which could be assigned to an account.",
+		"attributes": {
+			"name": {
+				"type": "string",
+				"description": "The ID for this entitlement per application",
+				"in_key_hash": true
+			},
+			"description": {
+				"type": "string"
+			}
+		}
+	},
+
+	"account": {
+		"description": "The definition of an account",
+		"attributes": {
+			"account_id": {
+				"type": "string",
+				"description": "The ID for this account",
+				"in_key_hash": true
+			},
+			"name": {
+				"type": "string",
+				"description": "The name of the application"
+			},
+			"description": {
+				"type": "string"
+			},
+			"creation_date": {
+				"type": "date"
+			}
+		}
+	},
+
+	"identity": {
+		"annotations": {
+			"graphql": {
+				"root": true
+			}
+		},
+		"attributes": {
+			"identity_id": {
+				"type": "string",
+				"description": "An id identifying this identity",
+				"in_key_hash": true
+			},
+			"first_name": {
+				"type": "string"
+			},
+			"last_name": "string",
+			"email": "string",
+			"date_of_birth": "date"
+		}
+	}
+}
