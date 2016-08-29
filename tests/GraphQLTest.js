@@ -9,18 +9,19 @@ import mkdirp from 'mkdirp';
 
 import GraphQLEventHandler from '../lib/GraphQLEventHandler';
 import GraphQLSchemaExporter from '../lib/GraphQLSchemaExporter';
-import Logger from 'jmf';
+import {Logger} from 'jmf';
+import {ModelParser} from 'jmf';
 
 
-const targetDir = path.join(__dirname, '../tests/volatile/result');
+const targetDir = path.join(__dirname, './volatile');
 prepareDir(targetDir);
 
-logger = new Logger();
+const logger = new Logger();
 
 // -------------------------------
 // Common
 // -------------------------------
-const metaModelFile = path.join(__dirname, '../tests/fixtures/demo_model.json');
+const metaModelFile = path.join(__dirname, './fixtures/demo_model.json');
 const metaModelContent = fs.readFileSync(metaModelFile);
 const metaModel = JSON.parse(metaModelContent);
 
@@ -28,7 +29,7 @@ const metaModel = JSON.parse(metaModelContent);
 // GraphQL
 // -------------------------------
 const schemaFile = path.join(targetDir, 'schema.js');
-const templateGraphQl = path.join(__dirname, './graphql/template_graphql_schema.js');
+const templateGraphQl = path.join(__dirname, '../resources/graphql_schema_template.js');
 
 const eventHandlerGraphQl = new GraphQLEventHandler({logger:logger});
 const exporterGraphQl = new GraphQLSchemaExporter ({logger:logger, template:templateGraphQl, fileName:schemaFile});
@@ -42,7 +43,7 @@ const options = {
 	"event_handler": [eventHandlerGraphQl]
 };
 
-const modelParser = require('./model_parser_base').modelParserFactory(options);
+const modelParser = new ModelParser(options);
 modelParser.parse(metaModel);
 modelParser.printErrors();
 

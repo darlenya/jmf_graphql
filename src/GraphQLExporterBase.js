@@ -15,7 +15,7 @@ const ID_FIELD_NAME = '__id_unique';
  * The base Model parser
  * Parses the model and calls eventhandler
  */
-export class GraphQLExporterBase {
+export default class GraphQLExporterBase {
 
   constructor(opts) {
     if (!opts) {

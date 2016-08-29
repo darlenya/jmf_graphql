@@ -16,7 +16,7 @@ const ID_FIELD_NAME = '__id_unique';
  * The base Model parser
  * Parses the model and calls eventhandler
  */
-export class GraphQLSchemaExporter extends GraphQLExporterBase {
+export default class GraphQLSchemaExporter extends GraphQLExporterBase {
 
   constructor(opts) {
     super(opts);
@@ -76,7 +76,7 @@ export class GraphQLSchemaExporter extends GraphQLExporterBase {
 
     this.rootObjects.forEach(objectName => {
       const annotation = {
-        'reference_type': 'connection'
+        reference_type: 'connection'
       };
       const referenceName = pluralize(objectName);
       const refString = this._buildReferenceSub(annotation, referenceName, objectName, `Get all ${referenceName}`, indent);
@@ -368,32 +368,30 @@ export class GraphQLSchemaExporter extends GraphQLExporterBase {
       lines.push(indent + `  type: ${this._getClassTypeName(targetName)},`);
       lines.push(indent + `  description: '${desc}'`);
       lines.push(indent + `}`);
-    } else {
+    } else if (annotation.refernce_type === 'list') {
       // This is a refernce
-      if (annotation.refernce_type === 'list') {
-        // Just a list of the type
-        lines.push(indent + `${referenceName}: {`);
-        lines.push(indent + `  type: new GraphQLList(${this._getClassTypeName(targetName)}),`);
-        lines.push(indent + `  description: '${desc}'`);
-        lines.push(indent + `}`);
-      } else if (annotation.reference_type === 'connection') {
-        // This is a reference where a connection is needed
-        // TODO create attribute
-        const conectionTypeName = this._getConnectionTypeName(targetName);
-        const getterName = this._getObjectGetterName(targetName);
+      // Just a list of the type
+      lines.push(indent + `${referenceName}: {`);
+      lines.push(indent + `  type: new GraphQLList(${this._getClassTypeName(targetName)}),`);
+      lines.push(indent + `  description: '${desc}'`);
+      lines.push(indent + `}`);
+    } else if (annotation.reference_type === 'connection') {
+      // This is a reference where a connection is needed
+      // TODO create attribute
+      const conectionTypeName = this._getConnectionTypeName(targetName);
+      const getterName = this._getObjectGetterName(targetName);
 
-        lines.push(indent + `${referenceName} :{`);
-        lines.push(indent + `  type: ${conectionTypeName}.connectionType,`);
-        lines.push(indent + `  description : '${desc}',`);
-        lines.push(indent + `  args: connectionArgs,`);
-        lines.push(indent + `  resolve: (parent, args) => connectionFromArray(`);
-        lines.push(indent + `    parent.${referenceName}.map(id => ${getterName}(id)),`);
-        lines.push(indent + `    args`);
-        lines.push(indent + `  ),`);
-        lines.push(indent + `}`);
-        // create conection
-        this._buildConnection(targetName);
-      }
+      lines.push(indent + `${referenceName} :{`);
+      lines.push(indent + `  type: ${conectionTypeName}.connectionType,`);
+      lines.push(indent + `  description : '${desc}',`);
+      lines.push(indent + `  args: connectionArgs,`);
+      lines.push(indent + `  resolve: (parent, args) => connectionFromArray(`);
+      lines.push(indent + `    parent.${referenceName}.map(id => ${getterName}(id)),`);
+      lines.push(indent + `    args`);
+      lines.push(indent + `  ),`);
+      lines.push(indent + `}`);
+      // create conection
+      this._buildConnection(targetName);
     }
 
     // returns the single reference creation string
@@ -439,6 +437,7 @@ export class GraphQLSchemaExporter extends GraphQLExporterBase {
     }
 
     if (indent === undefined) {
+      // eslint-disable-next-line no-param-reassign
       indent = '';
     }
 
@@ -453,7 +452,7 @@ export class GraphQLSchemaExporter extends GraphQLExporterBase {
       theType = `${attributeType}`;
     } else {
       // This is a list
-      theType = `new GraphQLList(${attributeType})`
+      theType = `new GraphQLList(${attributeType})`;
     }
 
     const lines = [];

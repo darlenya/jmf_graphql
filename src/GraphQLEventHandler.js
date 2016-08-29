@@ -2,7 +2,7 @@
 
 import deepcopy from 'deepcopy';
 
-import EventHandlerBase from 'jmf';
+import { DefaultEventHandler } from 'jmf';
 
 // The name of the field storing the unique ids for each record
 const ID_FIELD_NAME = '__id_unique';
@@ -36,7 +36,7 @@ const ATTR_TYPE_MAP = {
 /**
  * This handler creates a schema model for graphql
  */
-export class GraphQLEventHandler extends EventHandlerBase {
+export default class GraphQLEventHandler extends DefaultEventHandler {
 
   constructor(opts) {
     super(opts);
