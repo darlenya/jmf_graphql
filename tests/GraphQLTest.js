@@ -29,7 +29,7 @@ const metaModel = JSON.parse(metaModelContent);
 // GraphQL
 // -------------------------------
 const schemaFile = path.join(targetDir, 'schema.js');
-const templateGraphQl = path.join(__dirname, '../resources/graphql_schema_template.js');
+const templateGraphQl = path.join(__dirname, '../resources/graphql_schema.template');
 
 const eventHandlerGraphQl = new GraphQLEventHandler({logger:logger});
 const exporterGraphQl = new GraphQLSchemaExporter ({logger:logger, template:templateGraphQl, fileName:schemaFile});
