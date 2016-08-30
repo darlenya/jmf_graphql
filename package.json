@@ -30,13 +30,16 @@
   "engines": {
     "node": ">=5"
   },
-  "contributors": [{
-    "name": "Torsten Link",
-    "email": "torstenlink@gmx.de"
-  }, {
-    "name": "Markus Felten",
-    "email": "markus.felten@gmx.de"
-  }],
+  "contributors": [
+    {
+      "name": "Torsten Link",
+      "email": "torstenlink@gmx.de"
+    },
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    }
+  ],
   "license": "BSD-2-Clause",
   "config": {
     "commitizen": {
@@ -64,7 +67,7 @@
   "dependencies": {
     "change-case": "^3.0.0",
     "deepcopy": "^0.6.3",
-    "jmf": "^1.0.2",
+    "jmf": "^1.0.5",
     "pluralize": "^3.0.0"
   }
 }
