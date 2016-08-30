@@ -15,7 +15,7 @@
     "test": "npm run jsformat && npm run lint && npm run testonly",
     "testonly": "npm run prepublish && babel-node ./node_modules/.bin/_mocha tests/*Test.js",
     "doc": "jsdoc src/*.js -d jsdoc",
-    "jsformat": "js-beautify -r -f `ls src/*.js`",
+    "jsformat": "js-beautify -r -f `ls src/*.js tests/*.js`",
     "cover": "babel-node node_modules/isparta/bin/isparta cover --report text --report html node_modules/mocha/bin/_mocha -- tests/*Test.js --reporter dot",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -30,16 +30,13 @@
   "engines": {
     "node": ">=5"
   },
-  "contributors": [
-    {
-      "name": "Torsten Link",
-      "email": "torstenlink@gmx.de"
-    },
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    }
-  ],
+  "contributors": [{
+    "name": "Torsten Link",
+    "email": "torstenlink@gmx.de"
+  }, {
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }],
   "license": "BSD-2-Clause",
   "config": {
     "commitizen": {
