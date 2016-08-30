@@ -50,6 +50,8 @@ modelParser.printErrors();
 // -------------------------------
 // Export GraphQL
 // -------------------------------
+const expModel = eventHandlerGraphQl.getModel();
+//console.log(JSON.stringify(expModel, null, 2));
 exporterGraphQl.write(eventHandlerGraphQl.getModel());
 
 

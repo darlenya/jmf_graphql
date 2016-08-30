@@ -97,6 +97,7 @@ export default class GraphQLExporterBase {
    * @protected
    * @param {object} model - The model to be exported
    * @param {string} templateFileContent - The template file content read from the template file
+   * @returns {string} The file content which was build
    */
   // eslint-disable-next-line no-unused-vars
   _buildFile(model, templateFileContent) {

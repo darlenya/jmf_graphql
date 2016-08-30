@@ -50,17 +50,18 @@ export default class GraphQLSchemaExporter extends GraphQLExporterBase {
    * @protected
    * @param {object} model - The model to be exported
    * @param {string} templateFileContent - The template file content read from the template file
+   * @returns {string} The file content which was build
    */
   _buildFile(model, templateFileContent) {
     let content = templateFileContent;
-    content = templateFileContent.replace(/__IMPORTS__/, this._buildDatabaseImports(model));
-    content = templateFileContent.replace(/__GET_BY_ID__/, this._buildGetElementById(model));
-    content = templateFileContent.replace(/__GET_CLASS_TYPE__/, this._buildGetElementClassType(model));
+    content = content.replace(/__IMPORTS__/, this._buildDatabaseImports(model));
+    content = content.replace(/__GET_BY_ID__/, this._buildGetElementById(model));
+    content = content.replace(/__GET_CLASS_TYPE__/, this._buildGetElementClassType(model));
 
-    content = templateFileContent.replace(/__OBJECTS__/, this._buildObjectsString(model));
+    content = content.replace(/__OBJECTS__/, this._buildObjectsString(model));
 
     // get the root objects as references
-    content = templateFileContent.replace(/__VIEWER_FIELDS__/, this._buildViewerReferences(model));
+    content = content.replace(/__VIEWER_FIELDS__/, this._buildViewerReferences(model));
 
     return content;
   }
