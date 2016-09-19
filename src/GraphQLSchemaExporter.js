@@ -1,9 +1,10 @@
 'use strict';
 
+import fs from 'fs';
+
 import pluralize from 'pluralize';
 import changeCase from 'change-case';
 
-import GraphQLExporterBase from './GraphQLExporterBase';
 
 // The name of the field storing the unique ids for each record
 const ID_FIELD_NAME = '__id_unique';
@@ -16,34 +17,81 @@ const ID_FIELD_NAME = '__id_unique';
  * The base Model parser
  * Parses the model and calls eventhandler
  */
-export default class GraphQLSchemaExporter extends GraphQLExporterBase {
+export default class GraphQLSchemaExporter {
 
   constructor(opts) {
-    super(opts);
+    if (!opts) {
+      // eslint-disable-next-line no-param-reassign
+      opts = {};
+    }
+
+    if (opts.annotation !== undefined) {
+      this.annotation = opts.annotation;
+    } else {
+      this.annotation = 'graphql';
+    }
+
+
+    if (opts.template === undefined) {
+      throw new Error('No template file name given');
+    } else {
+      this.template = opts.template;
+    }
+
+    // you could define your own logger in th config
+    if (opts.logger) {
+      this.logger = opts.logger;
+    } else {
+      throw new Error("No logger defined in constructor of 'EventHandler '");
+    }
+
+    if (opts.fileName === undefined) {
+      throw new Error('No export file name given');
+    } else {
+      this.fileName = opts.fileName;
+    }
+
+    // Stores the generated class strings by there name
+    // definition->objectName.attributes.attributeName = attributeCreationString
+    // definition->objectName.string = objectCreationString
+    // definition->objectName.connection = connectionToThisObject
+    // definition->objectName.dependencies = [objName1, ..n]
+    // definition->objectName.name_class = className
+    // definition->objectName.name_type = typeName
+    this.definition = {};
+
+    // stores the object dependencies.
+    // On the root level are all the objects without dependencies.
+    // dependencies.[source] = [targets]
+    this.dependencies = {};
     this.rootObjects = [];
   }
 
+  /**
+   * Writes the model as defined by this exporter.
+   * The model has the format as created by the appropriate event handler
+   * @public
+   * @param {object} model - The model to be exported
+   */
+  write(model) {
+    const fileName = this.fileName;
+    const templateFile = this.template;
+    this.logger.info(`Export the model as file '${fileName}'`);
 
-  // /**
-  //  * Writes the model as defined by this exporter.
-  //  * The model has the format as created by the appropriate event handler
-  //  * @public
-  //  * @param {object} model - The model to be exported
-  //  */
-  // write(model){
-  // 	const fileName = this.fileName;
-  // 	console.log(`Export the model as file '${fileName}'`);
-  //
-  // 	this.logger.info(`Read template '${templateFile}'`);
-  // 	let templateFileContent = fs.readFileSync(templateFile, {encoding: 'utf-8'});
-  //
-  // 	// Build the obejcts
-  // 	this._buildObjects(model);
-  //
-  // 	const fileContent = this._buildFile(model, templateFileContent);
-  //
-  // 	fs.writeFileSync(fileName, fileContent);
-  // }
+    this.logger.info(`Read template '${templateFile}'`);
+    // eslint-disable-next-line no-sync
+    const templateFileContent = fs.readFileSync(templateFile, {
+      encoding: 'utf-8'
+    });
+
+    // Build the obejcts
+    this._buildObjects(model);
+
+    const fileContent = this._buildFile(model, templateFileContent);
+
+    // eslint-disable-next-line no-sync
+    fs.writeFileSync(fileName, fileContent);
+  }
 
   /**
    * Builds the schema.js content from the model and the template fil
@@ -126,26 +174,6 @@ export default class GraphQLSchemaExporter extends GraphQLExporterBase {
 
     return objects.join(`\n`);
   }
-
-  // /**
-  //  * Checks the objects annotations. Set the default values
-  //  * @protected
-  //  * @aram {object} config - The configuration of the object
-  //  */
-  // _validateObjectAnnotation(config){
-  // 	if(config.annotations === undefined){
-  // 		config.annotations = {};
-  // 	}
-  //
-  // 	if(config.annotations[this.getAnnotationName()] === undefined){
-  // 		config.annotations[this.getAnnotationName()] = {};
-  // 	}
-  //
-  // 	const anno = config.annotations[this.getAnnotationName()];
-  //
-  // 	if(anno.root === undefined)
-  //
-  // }
 
   /**
    * Creates the objects for the schema and stores them into
@@ -550,8 +578,6 @@ export default class GraphQLSchemaExporter extends GraphQLExporterBase {
   _getObjectGetterName(objectName) {
     return changeCase.camelCase('get ' + objectName);
   }
-
-
 
   /**
    * Creates the class name for an objectName

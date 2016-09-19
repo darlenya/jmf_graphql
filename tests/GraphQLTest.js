@@ -1,4 +1,3 @@
-/* jslint node: true, esnext: true */
 'use strict';
 
 import path from 'path';
@@ -9,8 +8,8 @@ import mkdirp from 'mkdirp';
 
 import GraphQLEventHandler from '../lib/GraphQLEventHandler';
 import GraphQLSchemaExporter from '../lib/GraphQLSchemaExporter';
-import {Logger} from 'jmf';
-import {ModelParser} from 'jmf';
+import { Logger } from 'jmf';
+import { ModelParser } from 'jmf';
 
 
 const targetDir = path.join(__dirname, './volatile');
@@ -31,16 +30,16 @@ const metaModel = JSON.parse(metaModelContent);
 const schemaFile = path.join(targetDir, 'schema.js');
 const templateGraphQl = path.join(__dirname, '../resources/graphql_schema.template');
 
-const eventHandlerGraphQl = new GraphQLEventHandler({logger:logger});
-const exporterGraphQl = new GraphQLSchemaExporter ({logger:logger, template:templateGraphQl, fileName:schemaFile});
+const eventHandlerGraphQl = new GraphQLEventHandler({ logger: logger });
+const exporterGraphQl = new GraphQLSchemaExporter({ logger: logger, template: templateGraphQl, fileName: schemaFile });
 
 // -------------------------------
 // Run
 // -------------------------------
 
 const options = {
-	//"event_handler": [eventHandlerGraphQl,eventHandlerTdgImport, eventHandlerTdgExport]
-	"event_handler": [eventHandlerGraphQl]
+  //"event_handler": [eventHandlerGraphQl,eventHandlerTdgImport, eventHandlerTdgExport]
+  "event_handler": [eventHandlerGraphQl]
 };
 
 const modelParser = new ModelParser(options);
@@ -51,16 +50,10 @@ modelParser.printErrors();
 // Export GraphQL
 // -------------------------------
 const expModel = eventHandlerGraphQl.getModel();
-//console.log(JSON.stringify(expModel, null, 2));
-exporterGraphQl.write(eventHandlerGraphQl.getModel());
-
-
-
-
-
-
-
-
+console.log("#####################################");
+console.log(JSON.stringify(expModel, null, 2));
+console.log("#####################################");
+//exporterGraphQl.write(expModel);
 
 
 
@@ -74,21 +67,20 @@ exporterGraphQl.write(eventHandlerGraphQl.getModel());
  * create the directory if missing
  */
 function prepareDir(dir) {
-	// Create the target directory if it does not exists
-	let stats;
-	try {
-		stats = fs.lstatSync(dir);
-	} catch (err) {
-		// do nothing
-	}
+  // Create the target directory if it does not exists
+  let stats;
+  try {
+    stats = fs.lstatSync(dir);
+  } catch (err) {
+    // do nothing
+  }
 
-	if (!stats) {
-		// the path does not exists, create it
-		mkdirp.sync(dir);
-	} else {
-		if (!stats.isDirectory()) {
-			throw `The given directory '${dir}' is not a directory`;
-		}
-	}
-
+  if (!stats) {
+    // the path does not exists, create it
+    mkdirp.sync(dir);
+  } else {
+    if (!stats.isDirectory()) {
+      throw `The given directory '${dir}' is not a directory`;
+    }
+  }
 }

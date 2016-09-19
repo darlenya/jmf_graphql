@@ -3,8 +3,10 @@
   "version": "0.0.0-semantic-release",
   "description": "JavaScript Modelling Framework. Create GraphQL Schema",
   "keywords": [
+    "jmf",
     "JMF",
-    "GraphQL"
+    "GraphQL",
+    "jmf-graphql"
   ],
   "main": "lib/index.js",
   "scripts": {
