@@ -53,7 +53,7 @@ const expModel = eventHandlerGraphQl.getModel();
 console.log("#####################################");
 console.log(JSON.stringify(expModel, null, 2));
 console.log("#####################################");
-//exporterGraphQl.write(expModel);
+exporterGraphQl.write(expModel);
 
 
 
