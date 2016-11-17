@@ -64,7 +64,7 @@
     "jsdoc": "^3.4.3",
     "mocha": "^3.1.2",
     "mocha-lcov-reporter": "^1.2.0",
-    "semantic-release": "^4.3.5"
+    "semantic-release": "^6.3.2"
   },
   "dependencies": {
     "change-case": "^3.0.0",
