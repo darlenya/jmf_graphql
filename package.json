@@ -58,7 +58,7 @@
     "babel-register": "^6.24.0",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.17.0",
-    "eslint-plugin-babel": "^4.0.0",
+    "eslint-plugin-babel": "^4.0.1",
     "isparta": "^4.0.0",
     "js-beautify": "^1.6.9",
     "jsdoc": "^3.4.3",
