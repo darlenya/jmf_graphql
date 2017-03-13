@@ -67,7 +67,7 @@
     "semantic-release": "^6.3.2"
   },
   "dependencies": {
-    "change-case": "^3.0.0",
+    "change-case": "^3.0.1",
     "deepcopy": "^0.6.3",
     "jmf": "^1.0.5",
     "pluralize": "^4.0.0"
